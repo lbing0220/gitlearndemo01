@@ -1,0 +1,325 @@
+$ mkdir learngit                               //创建目录
+$ cd learngit                                   //进入当前目录
+$ pwd                                              //显示当前目录
+$ git   init                                         //将本地这个仓库变成git可以管理的仓库
+$ ls  -ah                                          //查看隐藏的git目录
+$ git  add  file                                 //将当前文件(有后缀)加到git缓存区    
+$ git commit -m "wrote a readme file"           //提交到本地仓库   -m——"本次提交的说明"
+$ git  status                                    //查看当前仓库的状态 
+$ git  diff    fileName（加后缀的)    //查看上一次的修改     * 修改之后和提交新文件是一样的两步
+$ git diff HEAD -- fileName              //可以查看工作区和版本库里面最新版本的区别
+$ git  log                                          //查看当前之前的历史提交记录(可查commit_id(版本号))
+$ git reflog                                      //记录你的每一次命令  从这里可以找到之前的commit_id(版本号）
+$ git log --pretty=oneline                 //简单版的历史提交记录
+$ git reset --hard HEAD^                //回退到当前版本的上一个版本
+$ git reset  --hard 1094a(版本号） //回退到指定的版本
+$ cat  fileName                               //直接输出文件中的内容
+$ git reflog                                      //记录你的每一次命令  从这里可以找到之前的commit_id(版本号）
+$ git checkout   --   fileName        //可以丢弃工作区的修改
+$ git reset HEAD fileName(eg：readme.txt）      //将暂存区的file撤销掉（unstage),重新放回工作区
+$ rm     test.txt                            //从工作区删除指定文件
+$ git rm test.txt              //从版本库中删除该文件，提交之后完成
+$ git checkout  --  test.txt            //用版本库里的版本替换工作区的版本
+$ ssh-keygen -t rsa -C "youremail@example.com"                          //创建SSH Key
+$ git remote add origin git@github.com:michaelliao/learngit.git        //关联本地库与远程库  learngit是远程库的name
+$ git push -u origin master           //本地库的所有内容推送到远程库上
+$ git push origin master               //本地当前分支的最新修改推送至GitHub
+$ git clone git@github.com:michaelliao/gitskills.git            //从远程库clone一个分支
+$ git checkout -b dev              //创建`dev`分支，然后切换到`dev`分支
+$ git switch -c dev                   //创建`dev`分支，然后切换到`dev`分支
+$ git branch dev                     //创建`dev`分支
+git branch <name>                //创建分支
+$ git checkout dev                  //切换到`dev`分支
+$ git switch master                   //切换到`master`分支
+$ git branch                            //查看当前分支
+$ git checkout master            //切换回`master`分支
+$ git merge dev                     //把`dev`分支的工作成果合并到`master`分支//当前分支是master
+$ git   branch   -d    dev                                             //删除`dev`分支
+git log --graph                                                                     //可以看到分支合并图。
+$ git log --graph --pretty=oneline --abbrev-commit            //可以看到分支合并图。
+$ git merge --no-ff -m "merge with no-ff" dev                     //准备合并dev分支   请注意--no-ff参数，表示禁用Fast forward
+$ git log --graph --pretty=oneline --abbrev-commit            //查看分支历史：
+$ git stash                                           //保存当前工作现场
+$ git stash list                                     //查看工作现场
+$ git cherry-pick 4c805e2                  //复制一个特定的提交到当前分支4c805e2是提交的版本号
+$ git branch -D feature-vulcan          //强行删除分支 feature-vulcan 
+git checkout -b branch-name origin/branch-name                          //在本地创建和远程分支对应的分支
+branch --set-upstream-to <branch-name> origin/<branch-name>  //本地分支和远程分支的链接关系创建
+ git remote -v                                   //查看远程库信息
+
+
+详细use:
+1：常见命令
+$ mkdir learngit                            //创建目录
+$ cd learngit                                 //进入当前目录
+$ pwd                                           //显示当前目录
+/Users/michael/learngit
+
+
+2：初始化本地库及提交命令
+$ git   init                                       //将本地这个仓库变成git可以管理的仓库
+Initialized empty Git repository in /Users/michael/learngit/.git/
+git    ls  -ah                                  //查看隐藏的git目录
+
+**所有的版本控制系统，其实只能跟踪文本文件的改动，比如TXT文件，网页，所有的程序代码等等，Git也不例外。而图片、视频这些二进制文件，虽然也能由版本控制系统管理，但没法跟踪文件的变化，只能把二进制文件每次改动串起来，也就是只知道图片从100KB改成了120KB，但到底改了啥，版本控制系统不知道，也没法知道。**
+
+把一个文件放到Git本地仓库只需要两步。
+1：git  add  fileName                                       //将当前文件加到git缓存区    
+&&注意，可反复多次使用，添加多个文件；
+2：git commit -m "wrote a readme file"           //提交到本地仓库   -m——"本次提交的说明"
+[master (root-commit) eaadf4e] wrote a readme file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 readme.txt
+
+git  status                             //查看当前仓库的状态 
+git  diff    fileName               //查看上一次的修改            修改之后和提交新文件是一样的两步
+git diff HEAD -- fileName    //可以查看工作区和版本库里面最新版本的区别
+git  log                                 //查看当前之前的历史提交记录
+$ git log --pretty=oneline     //简单版的历史提交记录
+1094adb7b9b3807259d8cb349e7df1d4d6477073 (HEAD -> master) append GPL
+e475afc93c209a690c39c13a46716e8fa000c366 （16进制的commit id(版本号)）   add distributed
+eaadf4e385e865d25c48e7ca9c8395c3f7dfaef0   （16进制的commit id(版本号)）   wrote a readme 
+
+  
+3：版本回退命令
+HEAD^                                           //当前版本的上一个版本
+HEAD^^                                         //当前版本的上上一个版本  以次类推
+HEAD~n                                        //当前版本往上n个版本
+$ git reset --hard HEAD^               //回退到当前版本的上一个版本
+HEAD is now at e475afc add distributed
+$ git reset  --hard 1094a(版本号） //回退到指定的版本
+$ cat  fileName                              //直接输出文件中的内容
+git reflog                                        //记录你的每一次命令  从这里可以找到之前的commit_id(版本号）
+
+
+4：git原理
+工作区（Working Directory）
+       就是你在电脑里能看到的目录，比如我的learngit文件夹就是一个工作区。
+ 版本库（Repository）
+       工作区有一个隐藏目录`.git`，这个不算工作区，而是Git的版本库。
+Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支`master`，以及指向`master`的一个指针叫`HEAD`。
+前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+因为我们创建Git版本库时，Git自动为我们创建了唯一一个master分支，所以，现在，git commit就是往master分支上提交更改。
+为什么Git比其他版本控制系统设计得优秀，因为Git跟踪并管理的是修改，而非文件。
+
+
+5：丢弃修改
+$ git checkout -- fileName        //可以丢弃工作区的修改
+命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+       一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和之前版本库一模一样的状态；
+       一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+        总之，就是让这个文件回到最近一次(上一次)git commit或git add时的状态。
+        Git同样告诉我们，用命令git reset HEAD <file>可以把暂存区的修改撤销掉（unstage），重新放回工作区：
+$ git reset HEAD fileName(eg：readme.txt）      //暂存区的修改撤销掉（unstage),重新放回工作区
+Unstaged changes after reset:
+M   readme.txt
+git reset命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用HEAD时，表示最新的版本。
+
+
+6：删除命令
+         在Git中，删除也是一个修改操作，一般情况下，你通常直接在文件管理器中把没用的文件删了，或者用rm命令删了：
+$ rm     test.txt                            //从工作区删除指定文件
+这个时候，Git知道你删除了文件，因此，工作区和版本库就不一致了，git status命令会立刻告诉你哪些文件被删除了。
+现在你有两个选择，一是确实要从版本库中删除该文件，那就用命令git rm删掉，并且git commit：
+$ git rm test.txt
+rm 'test.txt'
+$ git commit -m "remove test.txt"
+[master d46f35e] remove test.txt
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 test.txt
+ 小提示：先手动删除文件，然后使用git rm <file>和git add<file>效果是一样的。
+
+另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本：
+$ git checkout -- test.txt            //用版本库里的版本替换工作区的版本
+git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。
+ 注意：从来没有被添加到版本库就被删除的文件，是无法恢复的！
+
+
+7：本地库与远程仓库关联的命令
+由于你的本地Git仓库和GitHub仓库之间的传输是通过SSH加密的，所以，需要一点设置：
+       第1步：创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
+$ ssh-keygen -t rsa -C "youremail@example.com"                     //创建SSH Key
+你需要把 邮件地址 换成你自己的邮件地址，然后一路回车，使用默认值即可，由于这个Key也不是用于军事目的，所以也无需设置密码。
+如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+        第2步：登陆GitHub，打开“Account settings”，“SSH Keys”页面：
+然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容：
+点“Add Key”，你就应该看到已经添加的Key：
+为什么GitHub需要SSH Key呢？因为GitHub需要识别出你推送的提交确实是你推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有你自己才能推送。
+当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。
+最后友情提示，在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。所以，不要把敏感信息放进去。
+
+如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，这样别人就看不见了（不可读更不可写）。另一个办法是自己动手，搭一个Git服务器，因为是你自己的Git服务器，所以别人也是看不见的。
+现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，真是一举多得。
+
+首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：
+现在，我们根据GitHub的提示，在本地的learngit仓库下运行命令：
+
+$ git remote add origin git@github.com:michaelliao/learngit.git        //关联本地库与远程库
+                                                                                                          //learngit是远程库的name
+请千万注意，把上面的michaelliao替换成你自己的GitHub账户名，否则，你在本地关联的就是我的远程库，关联没有问题，但是你以后推送是推不上去的，因为你的SSH Key公钥不在我的账户列表中。
+添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的，但是origin这个名字一看就知道是远程库。
+
+下一步，就可以把本地库的所有内容推送到远程库上：
+$ git push -u origin master           //本地库的所有内容推送到远程库上
+把本地库的内容推送到远程，用git push命令，实际上是把当前分支master推送到远程。
+由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+从现在起，只要本地作了提交，就可以通过命令：
+$ git push origin master               //本地master分支的最新修改推送至GitHub
+
+
+SSH警告
+当你第一次使用Git的`clone`或者`push`命令连接GitHub时，会得到一个警告：
+The authenticity of host 'github.com (xx.xx.xx.xx)' can't be established.
+RSA key fingerprint is xx.xx.xx.xx.xx.
+Are you sure you want to continue connecting (yes/no)`
+这是因为Git使用SSH连接，而SSH连接在第一次验证GitHub服务器的Key时，需要你确认GitHub的Key的指纹信息是否真的来自GitHub的服务器，输入`yes`回车即可。
+Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一个信任列表里了：
+Warning: Permanently added 'github.com' (RSA) to the list of known hosts.
+这个警告只会出现一次，后面的操作就不会有任何警告了。
+如果你实在担心有人冒充GitHub服务器，输入`yes`前可以对照[GitHub的RSA Key的指纹信息](https://help.github.com/articles/what-are-github-s-ssh-key-fingerprints/)是否与SSH连接给出的一致。
+现在，远程库已经准备好了，下一步是用命令git clone克隆一个本地库：
+
+$ git clone git@github.com:michaelliao/gitskills.git            //从远程库clone一个分支
+Cloning into 'gitskills'...
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 3
+Receiving objects: 100% (3/3), done.
+注意把Git库的地址换成你自己的，然后进入gitskills目录看看，已经有README.md文件了。
+$ cd gitskills
+$ ls
+README.md
+你也许还注意到，GitHub给出的地址不止一个，还可以用https://github.com/michaelliao/gitskills.git这样的地址。实际上，Git支持多种协议，默认的git://使用ssh，但也可以使用https等其他协议。
+使用https除了速度慢以外，还有个最大的麻烦是每次推送都必须输入口令，但是在某些只开放http端口的公司内部就无法使用ssh协议而只能用https。
+在版本回退里，你已经知道，每次提交，Git都把它们串成一条时间线，这条时间线就是一个分支。截止到目前，只有一条时间线，在Git里，这个分支叫主分支，即`master`分支。`HEAD`严格来说不是指向提交，而是指向`master`，`master`才是指向提交的，所以，`HEAD`指向的就是当前分支。
+一开始的时候，`master`分支是一条线，Git用`master`指向最新的提交，再用`HEAD`指向`master`，就能确定当前分支，以及当前分支的提交点：
+每次提交，`master`分支都会向前移动一步，这样，随着你不断提交，`master`分支的线也越来越长。
+当我们创建新的分支，例如`dev`时，Git新建了一个指针叫`dev`，指向`master`相同的提交，再把`HEAD`指向`dev`，就表示当前分支在`dev`上：
+你看，Git创建一个分支很快，因为除了增加一个`dev`指针，改改`HEAD`的指向，工作区的文件都没有任何变化！
+不过，从现在开始，对工作区的修改和提交就是针对`dev`分支了，比如新提交一次后，`dev`指针往前移动一步，而`master`指针不变：
+
+假如我们在`dev`上的工作完成了，就可以把`dev`合并到`master`上。Git怎么合并呢？最简单的方法，就是直接把`master`指向`dev`的当前提交，就完成了合并：
+所以Git合并分支也很快！就改改指针，工作区内容也不变！
+合并完分支后，甚至可以删除`dev`分支。删除`dev`分支就是把`dev`指针给删掉，删掉后，我们就剩下了一条`master`分支：
+首先，我们创建`dev`分支，然后切换到`dev`分支：
+$ git checkout -b dev              //创建`dev`分支，然后切换到`dev`分支：
+Switched to a new branch 'dev'
+`git checkout`命令加上`-b`参数表示创建并切换，相当于以下两条命令：
+$ git branch dev                     //创建`dev`分支
+$ git checkout dev                  //切换到`dev`分支
+Switched to branch 'dev'
+$ git branch                            //查看当前分支
+* dev
+  master
+`git branch`命令会列出所有分支，当前分支前面会标一个`*`号。
+然后，我们就可以在`dev`分支上正常提交，比如对`readme.txt`做个修改，加上一行：
+Creating a new branch is quick.
+然后提交：
+$ git add readme.txt    
+$ git commit -m "branch test"
+[dev b17d20e] branch test
+ 1 file changed, 1 insertion(+)
+现在，`dev`分支的工作完成，我们就可以切换回`master`分支：
+$ git checkout master                     //切换回`master`分支
+Switched to branch 'master'
+切换回`master`分支后，再查看一个`readme.txt`文件，刚才添加的内容不见了！因为那个提交是在`dev`分支上，而`master`分支此刻的提交点并没有变：
+现在，我们把`dev`分支的工作成果合并到`master`分支上：
+$ git merge dev                           //把`dev`分支的工作成果合并到`master`分支//当前分支是master
+Updating d46f35e..b17d20e
+Fast-forward
+ readme.txt | 1 +
+ 1 file changed, 1 insertion(+)
+`git merge`命令用于合并指定分支到当前分支。合并后，再查看`readme.txt`的内容，就可以看到，和`dev`分支的最新提交是完全一样的。
+注意到上面的`Fast-forward`信息，Git告诉我们，这次合并是“快进模式”，也就是直接把`master`指向`dev`的当前提交，所以合并速度非常快。
+当然，也不是每次合并都能`Fast-forward`，我们后面会讲其他方式的合并。
+合并完成后，就可以放心地删除`dev`分支了：
+$ git   branch   -d    dev                                             //删除`dev`分支
+Deleted branch dev (was b17d20e).
+删除后，查看`branch`，就只剩下`master`分支了：
+$ git branch
+* master
+因为创建、合并和删除分支非常快，所以Git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在`master`分支上工作效果是一样的，但过程更安全。
+
+
+### switch
+我们注意到切换分支使用`git checkout <branch>`，而前面讲过的撤销修改则是`git checkout -- <file>`，同一个命令，有两种作用，确实有点令人迷惑。
+实际上，切换分支这个动作，用`switch`更科学。因此，最新版本的Git提供了新的`git switch`命令来切换分支：
+创建并切换到新的`dev`分支，可以使用： 
+$ git switch -c dev
+直接切换到已有的`master`分支，可以使用：
+$ git switch master
+使用新的`git switch`命令，比`git checkout`要更容易理解。
+小结
+Git鼓励大量使用分支：
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>或者git switch <name>
+创建+切换分支：git checkout -b <name>或者git switch -c <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
+git log --graph                                                                          //可以看到分支合并图。
+$ git log --graph --pretty=oneline --abbrev-commit                  //可以看到分支合并图。
+通常，合并分支时，如果可能，Git会用Fast forward模式，但这种模式下，删除分支后，会丢掉分支信息。
+如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
+$ git merge --no-ff -m "merge with no-ff" dev                     //准备合并dev分支
+                                                                                           //请注意--no-ff参数，表示禁用Fast forward
+合并后，我们用git log看看分支历史：
+$ git log --graph --pretty=oneline --abbrev-commit            //查看分支历史：
+因为本次合并要创建一个新的commit，所以加上-m参数，把commit描述写进去。
+
+修复bug时，我们会通过创建新的bug分支进行修复，然后合并，最后删除；
+并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间。但是，必须在两个小时内修复该bug，怎么办？
+幸好，Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
+$ git stash                                           //保存当前工作现场
+Saved working directory and index state WIP on dev: f52c633 add merge
+回到现场：工作区是干净的，刚才的工作现场存到哪去了？用git stash list命令看看：
+$ git stash list                                     //查看工作现场
+stash@{0}: WIP on dev: f52c633 add merge
+工作现场还在，Git把stash内容存在某个地方了，但是需要恢复一下，有两个办法：
+        一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+        另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+$ git stash pop                                   //恢复的同时把stash内容也删了
+你也可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
+$ git stash apply stash@{0}                //恢复指定的stash
+在master分支上修复的bug，想要合并到当前dev分支，可以用git cherry-pick <commit>命令，把bug提交的修改“复制”到当前分支，避免重复劳动。
+为了方便操作，Git专门提供了一个cherry-pick命令，让我们能复制一个特定的提交到当前分支：
+$ git branch
+* dev
+  master
+$ git cherry-pick 4c805e2               //复制一个特定的提交到当前分支
+[master 1d4b803] fix bug 101
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+4c805e2是上次提交的版本号：如下
+$ git add readme.txt 
+$ git commit -m "fix bug 101"
+[issue-101 4c805e2] fix bug 101
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+删除未被合并的分支
+$ git branch -d feature-vulcan
+error: The branch 'feature-vulcan' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D feature-vulcan'.
+销毁失败。Git友情提醒，feature-vulcan分支还没有被合并，如果删除，将丢失掉修改，如果要强行删除，需要使用大写的-D参数。。
+现在我们强行删除：
+$ git branch -D feature-vulcan             //强行删除分支 feature-vulcan 
+Deleted branch feature-vulcan (was 287773e).
+终于删除成功！
+
+因此，多人协作的工作模式通常是这样：
+首先，可以试图用git push origin <branch-name>推送自己的修改；
+如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+如果合并有冲突，则解决冲突，并在本地提交；
+没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功！
+如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git 
+
+branch --set-upstream-to <branch-name> origin/<branch-name>。  
+ //本地分支和远程分支的链接关系创建
+
+查看远程库信息，使用git remote -v；
+本地新建的分支如果不推送到远程，对其他人就是不可见的；
+从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。 
+
